@@ -1,18 +1,36 @@
+import kotlin.math.abs
+
 fun main() {
+
+    fun parse(input: List<String>): Pair<ArrayList<Int>, ArrayList<Int>> {
+        val left = ArrayList<Int>()
+        val right = ArrayList<Int>()
+        input.forEach { line ->
+            left.add(line.substringBefore(' ').trim().toInt())
+            right.add(line.substringAfter(' ').trim().toInt())
+        }
+        return left to right
+    }
+
     fun part1(input: List<String>): Int {
-        return input.size
+        val (left, right) = parse(input)
+
+        val difference = left.sorted()
+            .zip(right.sorted())
+            .sumOf { abs(it.first - it.second) }
+
+        return difference
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val (left, right) = parse(input)
+
+        val similarity = left.sumOf { leftNumber ->
+            leftNumber * right.count { it == leftNumber }
+        }
+
+        return similarity
     }
-
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
 
     // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
