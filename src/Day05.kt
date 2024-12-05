@@ -4,12 +4,13 @@ fun main() {
     lateinit var updates: List<List<Int>>
 
     fun parseInput(input: List<String>) {
-        val separation = input.indexOfFirst { it.isBlank() }
-        rules = input.subList(0,separation)
+        rules = input.takeWhile { it.isNotEmpty() }.toList()
             .map { rule -> rule.split("|") }
             .map { it[0].toInt() to it[1].toInt() }
-        updates = input.subList(separation + 1, input.size)
-            .map { update -> update.split(",").map { it.toInt() } }
+        updates = input
+            .dropWhile { it.isNotEmpty() }
+            .drop(1)
+            .map { row -> row.split(",").map { it.toInt() } }
     }
 
 
